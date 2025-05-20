@@ -49,7 +49,7 @@ public class UserService
 
 
 
-    public Optional<UserResponse> fetchSingleUser(Long id) {
+    public Optional<UserResponse> fetchSingleUser(String id) {
 //        return usersList.stream()
 //                .filter(user -> user.getId().equals(id)).findFirst();
 
@@ -58,19 +58,33 @@ public class UserService
     }
 
 
-    public boolean updateUser(Long id, UserRequest updatedUser) {
+//    public boolean updateUser(String id, UserRequest updatedUser) {
+//
+//        return usersList.stream()
+//                .filter(user -> user.getId().equals(id))
+//                .findFirst()
+//                .map(existingUser -> {
+//                 UpdateUserFromRequestDto(existingUser, updatedUser);
+//                    userRepository.save(existingUser);
+//
+//                    return true;
+//                })
+//                .orElse(false);
+//    }
 
-        return usersList.stream()
-                .filter(user -> user.getId().equals(id))
-                .findFirst()
-                .map(existingUser -> {
-                 UpdateUserFromRequestDto(existingUser, updatedUser);
-                    userRepository.save(existingUser);
-
-                    return true;
-                })
-                .orElse(false);
+    public boolean updateUser(String id, UserRequest updatedUser) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            UpdateUserFromRequestDto(existingUser, updatedUser);
+            userRepository.save(existingUser);
+            return true;
+        } else {
+            return false;
+        }
     }
+
+
 
     private void UpdateUserFromRequestDto(User user, UserRequest userRequest)
     {

@@ -1,37 +1,45 @@
 package com.ecommerce.user.models;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+//import org.hibernate.annotations.CreationTimestamp;
+//import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Data
-@Entity(name="users")
+//@Entity(name="users")
+@Document(collection = "users")
 public class User
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String firstname;
     private String lastname;
+    @Indexed(unique = true)
     private String email;
     private String phonenumber;
     private UserRole userRole= UserRole.CUSTOMER;
-    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+   // @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+  //  @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
 
 
-    @CreationTimestamp
+   // @CreationTimestamp
+    @CreatedDate
     private LocalDateTime createdAt;
-    @UpdateTimestamp
+    //@UpdateTimestamp
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     public User()
@@ -39,7 +47,7 @@ public class User
 
     }
 
-    public User(Long id, String firstname, String lastname, String email, String phonenumber) {
+    public User(String id, String firstname, String lastname, String email, String phonenumber) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -47,11 +55,11 @@ public class User
         this.phonenumber = phonenumber;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
