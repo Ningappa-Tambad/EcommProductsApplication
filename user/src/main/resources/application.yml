@@ -1,4 +1,12 @@
-spring.application.name=user
+spring:
+  application:
+    name: user-service
+  config:
+    import: optional:configserver:http://localhost:8888
+server:
+  port: 8082
+
+
 #h2database
 #spring.h2.console.enabled=true
 #server.port=8082
@@ -23,7 +31,7 @@ spring.application.name=user
 #POSTGRESS SQL
 
 #spring.datasource.url=jdbc:postgresql://localhost:5432/userdb
-server.port=8082
+#server.port=8082
 #spring.datasource.username=embarkx
 #spring.datasource.password=embarkx
 #spring.datasource.jpa.database=POSTGRESQL
@@ -36,6 +44,26 @@ server.port=8082
 
 #Connect to MangoDB
 
-spring.data.mongodb.uri=mongodb://localhost:27017/usersdb
-spring.data.mongodb.database=usersdb
-logging.level.org.springframework.data.mongodb.core.MongoTemplate=TRACE
+#spring.data.mongodb.uri=mongodb+srv://ningaraj2t:XPpwTDeu2W3u9Z5J@usersdata.fyqz2ug.mongodb.net/?retryWrites=true&w=majority&appName=usersdata
+#spring.data.mongodb.database=usersdb
+#logging.level.org.springframework.data.mongodb.core.MongoTemplate=TRACE
+
+#Connect to local mangoDB
+
+#spring.data.mongodb.uri=mongodb://localhost:27017/usersdb
+#spring.data.mongodb.database=usersdb
+#logging.level.org.springframework.data.mongodb.core.MongoTemplate=TRACE
+#server.port=8082
+
+##connecting remote  postgres sql data base in cloud
+#
+#spring.datasource.url=jdbc:postgresql://ep-holy-bird-a5cbjjg3-pooler.us-east-2.aws.neon.tech/product?sslmode=require
+#server.port=8082
+#spring.datasource.username=product_owner
+#spring.datasource.password=npg_MRso21XYUIGv
+#spring.datasource.jpa.database=POSTGRESQL
+#spring.jpa.hibernate.ddl-auto=update
+#spring.jpa.show-sql=true
+#spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+#logging.level.org.springframework.web=DEBUG
+#logging.level.org.springframework.http.converter=DEBUG

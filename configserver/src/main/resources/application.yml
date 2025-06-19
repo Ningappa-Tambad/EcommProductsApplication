@@ -1,0 +1,28 @@
+---
+spring:
+  application:
+    name: configserver
+  profiles:
+    active: native
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///C:\2024\SCALER ACADEMY\MYMICROSERVICES\EcommerceMicroServiceApplications\configserver\src\main\resources\config
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+server:
+  port: 8888
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

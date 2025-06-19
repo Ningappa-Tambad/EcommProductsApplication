@@ -1,3 +1,5 @@
+#POSTGRES SQL docker container yml data
+
 services:
   postgres:
     container_name: postgres_container
@@ -11,7 +13,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - backend
     restart: unless-stopped
   pgadmin:
     container_name: pgadmin_container
@@ -25,14 +27,65 @@ services:
     ports:
       - "5050:80"
     networks:
-      - postgres
+      - backend
+    restart: unless-stopped
+
+  rabbitmq:
+    container_name: rabbitmq_container
+    image: rabbitmq:management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"    #RABITMQ message broker port
+      - "15672:15672" # RabbitMQ management UI
+    networks:
+      - backend
     restart: unless-stopped
 
 networks:
-  postgres:
+  backend:
     driver: bridge
 
 volumes:
   postgres:
   pgadmin:
 
+#MYSQl docker container yml data
+
+#services:
+#  mysql:
+#    container_name: mysql_container
+#    image: mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: embarkx
+#      MYSQL_DATABASE: embarkx
+#      MYSQL_USER: embarkx
+#      MYSQL_PASSWORD: embarkx
+#    volumes:
+#      - mysql_data:/var/lib/mysql
+#    ports:
+#      - "3307:3306"
+#    networks:
+#      - mysql_network
+#    restart: unless-stopped
+#
+#  phpmyadmin:
+#    container_name: phpmyadmin_container
+#    image: phpmyadmin/phpmyadmin
+#    environment:
+#      PMA_HOST: mysql
+#      PMA_PORT: 3306
+#      MYSQL_ROOT_PASSWORD: embarkx
+#    ports:
+#      - "8484:80"
+#    networks:
+#      - mysql_network
+#    restart: unless-stopped
+#
+#networks:
+#  mysql_network:
+#    driver: bridge
+#
+#volumes:
+#  mysql_data:
