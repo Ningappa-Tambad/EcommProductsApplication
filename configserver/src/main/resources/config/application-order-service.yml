@@ -67,6 +67,15 @@ rabbitmq:
   port: 5672
   username: guest
   password: guest
+
+EUREKA:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+
 # Uncomment the following lines to enable H2 database configuration
 #h2 database configuration
 

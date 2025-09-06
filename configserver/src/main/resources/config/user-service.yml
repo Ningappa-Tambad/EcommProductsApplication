@@ -17,6 +17,14 @@ logging:
 
 server:
   port: 8082
+
+EUREKA:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
 #spring:
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/userdb
