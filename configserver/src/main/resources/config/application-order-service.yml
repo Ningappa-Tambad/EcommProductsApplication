@@ -48,13 +48,6 @@ spring:
 server:
   port: 8083
 
-logging:
-  level:
-    org:
-      springframework:
-        web: DEBUG
-        http:
-          converter: DEBUG
 
 management:
   endpoints:
@@ -75,6 +68,14 @@ EUREKA:
     register-with-eureka: true
     fetch-registry: true
 
+
+logging:
+  file:
+    name: logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 5MB
+      max-history: 30
 
 # Uncomment the following lines to enable H2 database configuration
 #h2 database configuration

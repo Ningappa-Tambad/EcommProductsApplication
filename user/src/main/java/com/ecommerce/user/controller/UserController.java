@@ -3,6 +3,10 @@ package com.ecommerce.user.controller;
 import com.ecommerce.user.dtos.UserRequest;
 import com.ecommerce.user.dtos.UserResponse;
 import com.ecommerce.user.services.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +15,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Slf4j
 public class UserController
 {
 
-    private UserService userService;
+    private final UserService userService;
+   // private final Logger logger= LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserService userService) {
+
+    @Autowired
+    public UserController(UserService userService)
+    {
         this.userService = userService;
+
     }
 
     //@GetMapping("/api/users")
@@ -29,7 +39,14 @@ public class UserController
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable("id") String id) {
 
-        return userService.fetchSingleUser(id)
+        log.info("THIS IS INFO LEVEL: {}", id+"GENERAL SYSTEM INFORMATION");
+        log.trace("THIS IS TRACE LEVEL-VERY DETAILS LOG");
+        log.debug("THIS IS DEBUG LEVEL-DEBUGGING INFORMATION");
+        log.warn("THIS IS WARN LEVEL-WARNING MESSAGE");
+        log.error("THIS IS ERROR LEVEL-ERROR MESSAGE");
+
+
+                return userService.fetchSingleUser(id)
                 .map(user -> (ResponseEntity<UserResponse>) new ResponseEntity<>(user, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

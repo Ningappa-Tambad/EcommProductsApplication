@@ -71,20 +71,9 @@ public class ProductService {
     public Optional<ProductResponse> fetchSingleProduct(Long id) {
 
         // Logic to fetch a single product by ID
-        return productRepository.findById(id)
-                .map(product -> {
-                    ProductResponse productResponse = new ProductResponse();
-                    productResponse.setId(product.getId());
-                    productResponse.setName(product.getName());
-                    productResponse.setDescription(product.getDescription());
-                    productResponse.setPrice(product.getPrice());
-                    productResponse.setStockQuantity(product.getStockQuantity());
-                    productResponse.setCategory(product.getCategory());
-                    productResponse.setImageUrl(product.getImageUrl());
-                    productResponse.setActive(product.getActive());
-                    return Optional.of(productResponse);
-                })
-                .orElse(Optional.empty());
+        return Optional.ofNullable(productRepository.findById(id)
+                .map(this::mapToProductResponse)
+                .orElse(null));
     }
 
     public List<ProductResponse> fetchAllProducts() {

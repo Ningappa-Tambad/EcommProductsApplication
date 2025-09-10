@@ -1,16 +1,19 @@
 package com.ecommerce.user.services;
 
+import com.ecommerce.user.controller.UserController;
 import com.ecommerce.user.dtos.AddressDTO;
 import com.ecommerce.user.repository.UserRepository;
 import com.ecommerce.user.dtos.UserRequest;
 import com.ecommerce.user.dtos.UserResponse;
 import com.ecommerce.user.models.Address;
 import com.ecommerce.user.models.User;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,17 +26,16 @@ public class UserService
     private Long nextId=1L;
 
 
-    public List<UserResponse> fetchAllUsers()
-    {
-
-       return userRepository.findAll().stream()
-                .map(this::mapToUserResponseDto)
-                .collect(Collectors.toList());
-    }
-
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public List<UserResponse> fetchAllUsers()
+    {
+       return userRepository.findAll().stream()
+                .map(this::mapToUserResponseDto)
+                .collect(Collectors.toList());
     }
 
 
@@ -53,7 +55,7 @@ public class UserService
 //        return usersList.stream()
 //                .filter(user -> user.getId().equals(id)).findFirst();
 
-        return userRepository.findById(id)
+   return userRepository.findById(id)
                 .map(this::mapToUserResponseDto);
     }
 

@@ -1,6 +1,10 @@
 package com.ecommerce.order.services;
 
+import com.ecommerce.order.client.ProductServiceClient;
+import com.ecommerce.order.client.UserServiceClient;
 import com.ecommerce.order.dtos.CartItemRequest;
+import com.ecommerce.order.dtos.ProductResponse;
+import com.ecommerce.order.dtos.UserResponse;
 import com.ecommerce.order.models.CartItem;
 import com.ecommerce.order.repositories.CartItemRepository;
 //import com.springacademy.ecartmicroservicesapp.model.Product;
@@ -22,6 +26,8 @@ public class CartService {
   //  private final ProductRepository productRepository;
    // private final UserRepository userRepository;
     private final CartItemRepository cartItemRepository;
+    private final ProductServiceClient productServiceClient;
+    private final UserServiceClient userServiceClient;
 
 //    @Autowired
 //    public CartService(ProductRepository productRepository, UserRepository userRepository, CartItemRepository cartItemRepository) {
@@ -30,9 +36,13 @@ public class CartService {
 //        this.cartItemRepository = cartItemRepository;
 //    }
 
-        @Autowired
-    public CartService(CartItemRepository cartItemRepository) {
+
+    @Autowired
+    public CartService(CartItemRepository cartItemRepository, ProductServiceClient productServiceClient
+    ,UserServiceClient userServiceClient) {
         this.cartItemRepository = cartItemRepository;
+        this.productServiceClient = productServiceClient;
+        this.userServiceClient=userServiceClient;
     }
 
     public boolean addToCart(Long userId, CartItemRequest request)
@@ -40,6 +50,23 @@ public class CartService {
         // Logic to add item to cart
         // This could involve checking if the product exists, updating the cart, etc.
         // For now, we'll just print the details
+        //When we call to product service through rest clint
+       ProductResponse productResponse=productServiceClient.getProductDetails(request.getProductId());
+       if(productResponse==null)
+       {
+           return false;
+       }
+        Integer stockQuantity = productResponse.getStockQuantity();
+        int availableStock = (stockQuantity != null) ? stockQuantity.intValue() : 0;
+        if (availableStock < request.getQuantity()) {
+            return false;
+        }
+
+        UserResponse userResponse=userServiceClient.getUserDetails(String.valueOf(userId));
+        if(userResponse==null)
+        {
+            return false;
+        }
 
 //     Optional<Product>  productOpt= productRepository.findById(request.getProductId());
 //        if(productOpt.isEmpty())
@@ -94,6 +121,7 @@ public class CartService {
            // cartItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(request.getQuantity())));
 
             cartItem.setPrice(BigDecimal.valueOf(1000.00));
+
             cartItemRepository.save(cartItem);
         }
         // Update the product stock quantity

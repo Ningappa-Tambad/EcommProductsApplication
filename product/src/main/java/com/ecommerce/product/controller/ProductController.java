@@ -57,6 +57,7 @@ public class ProductController
         return productService.fetchSingleProduct(id)
                 .map(productResponse -> ResponseEntity.ok(productResponse))
                 .orElse(ResponseEntity.notFound().build());
+
     }
 
     //get all the products
